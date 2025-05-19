@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h1>Student List</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th><th>Name</th><th>Age</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student : ${students}">
+        <td th:text="${student.id}">ID</td>
+        <td th:text="${student.name}">Name</td>
+        <td th:text="${student.age}">Age</td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Total Age: <span th:text="${totalAge}">0</span></h2>
+
+<h2>Age Scatter Plot (ID vs Age)</h2>
+<canvas id="ageChart" width="600" height="300"></canvas>
+
+<script th:inline="javascript">
+    const dataPoints = /*[[${points}]]*/ [];
+
+    const ctx = document.getElementById('ageChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Student (ID vs Age)',
+                data: dataPoints,
+                backgroundColor: 'rgba(75, 192, 192, 0.7)'
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Student ID'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Age'
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+<h2>After Surgery Records</h2>
+<!-- Wrapper div for horizontal scroll -->
+<div style="overflow-x: auto; border: 1px solid #ccc; padding: 10px;">
+    <table border="1" style="border-collapse: collapse; min-width: 1200px;">
+        <thead style="background-color: #f2f2f2;">
+        <tr>
+            <th style="white-space: nowrap;">ID</th>
+            <th style="white-space: nowrap;">Date</th>
+            <th style="white-space: nowrap;">Post-op Visits</th>
+            <th style="white-space: nowrap;">Analgesia Cases</th>
+            <th style="white-space: nowrap;">Adverse Reactions</th>
+            <th style="white-space: nowrap;">Nausea & Vomiting</th>
+            <th style="white-space: nowrap;">Dizziness</th>
+            <th style="white-space: nowrap;">Nausea+Vomiting+Dizziness</th>
+            <th style="white-space: nowrap;">Skin Itching</th>
+            <th style="white-space: nowrap;">Allergic Rash</th>
+            <th style="white-space: nowrap;">Delayed Recovery</th>
+            <th style="white-space: nowrap;">Puncture Site Abnormality</th>
+            <th style="white-space: nowrap;">Bloating</th>
+            <th style="white-space: nowrap;">Other Conditions</th>
+            <th style="white-space: nowrap;">Critically Ill Follow-ups</th>
+            <th style="white-space: nowrap;">Poor Analgesic Effect</th>
+            <th style="white-space: nowrap;">Total Critically Ill Visits</th>
+            <th style="white-space: nowrap;">Joint Complications</th>
+            <th style="white-space: nowrap;">Motor Dysfunction</th>
+            <th style="white-space: nowrap;">Wound Complications</th>
+            <th style="white-space: nowrap;">Foot & Ankle Complications</th>
+            <th style="white-space: nowrap;">Pediatric Adverse Events</th>
+            <th style="white-space: nowrap;">Spinal Complications</th>
+            <th style="white-space: nowrap;">Hand Surgery Complications</th>
+            <th style="white-space: nowrap;">Formula One</th>
+            <th style="white-space: nowrap;">Formula Two</th>
+            <th style="white-space: nowrap;">Formula Three</th>
+            <th style="white-space: nowrap;">Formula Four</th>
+            <th style="white-space: nowrap;">Formula Five</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rec : ${afterSurgeryRecords}">
+            <td th:text="${rec.id}">ID</td>
+            <td th:text="${rec.date}" style="white-space: nowrap;">Date</td>
+            <td th:text="${rec.numOfPostoperativeVisits}">Visits</td>
+            <td th:text="${rec.numOfPostoperativeAnalgesiaCases}">Analgesia</td>
+            <td th:text="${rec.numOfAdverseReactionCases}">Adverse</td>
+            <td th:text="${rec.nauseaAndVomiting}">Nausea</td>
+            <td th:text="${rec.dizziness}">Dizziness</td>
+            <td th:text="${rec.nauseaVomitingDizziness}">Combined Symptoms</td>
+            <td th:text="${rec.skinItching}">Itching</td>
+            <td th:text="${rec.allergicRash}">Rash</td>
+            <td th:text="${rec.delayedRecoveryFromAnesthesia}">Delayed Recovery</td>
+            <td th:text="${rec.abnormalityAtThePunctureSite}">Puncture Site</td>
+            <td th:text="${rec.bloating}">Bloating</td>
+            <td th:text="${rec.otherConditions}">Other</td>
+            <td th:text="${rec.numberOfFollowupVisitsForCriticallyIIIPatients}">Critical F/U</td>
+            <td th:text="${rec.poorAnalgesicEffect}">Poor Analgesia</td>
+            <td th:text="${rec.totalNumberOfCriticallyIIIPatientsVisited}">Total Critical</td>
+            <td th:text="${rec.numberOfJointComplications}">Joint</td>
+            <td th:text="${rec.numberOfMotorDysfunctionClass}">Motor</td>
+            <td th:text="${rec.numberOfWoundComplications}">Wound</td>
+            <td th:text="${rec.numberOfFootAndAnkleComplications}">Foot/Ankle</td>
+            <td th:text="${rec.numberOfPediatricAdverseEvents}">Pediatric</td>
+            <td th:text="${rec.numberOfSpinalComplications}">Spinal</td>
+            <td th:text="${rec.numberOfHandSurgeryComplications}">Hand</td>
+            <td th:text="${rec.formulaOne}">Formula 1</td>
+            <td th:text="${rec.formulaTwo}">Formula 2</td>
+            <td th:text="${rec.formulaThree}">Formula 3</td>
+            <td th:text="${rec.formulaFour}">Formula 4</td>
+            <td th:text="${rec.formulaFive}">Formula 5</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<h2>After Surgery – Adverse Reaction Proportion</h2>
+
+<div style="overflow-x: auto; border: 1px solid #ccc; padding: 10px;">
+    <table border="1" style="border-collapse: collapse; min-width: 1200px;">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Analgesia Cases</th>
+            <th>Adverse Reactions</th>
+            <th>Proportion of Adverse Reactions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="row : ${afterSurgerySummaries}">
+            <td th:text="${row.id}">ID</td>
+            <td th:text="${row.date}" style="white-space: nowrap;">Date</td>
+            <td th:text="${row.analgesiaCases}">Analgesia</td>
+            <td th:text="${row.adverseReactions}">Adverse</td>
+            <td th:text="${row.adverseReactionRate != null ? #numbers.formatDecimal(row.adverseReactionRate, 1, 3) : 'N/A'}">
+                Proportion
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<h2>After Surgery – Total and Percentage</h2>
+<div style="overflow-x: auto; border: 1px solid #ccc; padding: 10px;">
+    <table border="1" style="border-collapse: collapse; min-width: 1200px;">
+        <thead>
+        <tr>
+            <th>Total Post-op Visits</th>
+            <th>Total Analgesia Cases</th>
+            <th>Total Adverse Reactions</th>
+            <th>Total Poor Analgesic Effect</th>
+            <th>Total Followup Visits For CriticallyIII Patients</th>
+            <th>Proportion Of Postoperative Analgesia</th>
+            <th>Overall Adverse Reaction Rate</th>
+            <th>Postoperative Analgesia Satisfaction Rate</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${totalVisits}">0</td>
+            <td th:text="${totalAnalgesia}">0</td>
+            <td th:text="${totalAdverse}">0</td>
+            <td th:text="${totalPoorAnalgesicEffect}">0</td>
+            <td th:text="${totalNumberOfFollowupVisitsForCriticallyIIIPatients}">0</td>
+            <td th:text="${proportionOfPostoperativeAnalgesia}">0</td>
+            <td th:text="${overallAdverseReactionRate}">0</td>
+            <td th:text="${postoperativeAnalgesiaSatisfactionRate}">0</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<h2>After Surgery – Total and Percentage - Table 2</h2>
+<div style="overflow-x: auto; border: 1px solid #ccc; padding: 10px;">
+    <table border="1" style="border-collapse: collapse; min-width: 1200px;">
+        <thead>
+        <tr>
+            <th style="white-space: nowrap;">Total Adverse Reactions</th>
+            <th style="white-space: nowrap;">Total Nausea And Vomiting</th>
+            <th style="white-space: nowrap;">Total Dizziness</th>
+            <th style="white-space: nowrap;">Total Nausea Vomiting Dizziness</th>
+            <th style="white-space: nowrap;">Total Skin Itching</th>
+            <th style="white-space: nowrap;">Proportion Of Nausea And Vomiting</th>
+            <th style="white-space: nowrap;">Proportion Dizziness</th>
+            <th style="white-space: nowrap;">Proportion Of NauseaVomitingDizziness</th>
+            <th style="white-space: nowrap;">Proportion Of Skin Itching</th>
+            <th style="white-space: nowrap;">Total Delayed Recovery From Anesthesia</th>
+            <th style="white-space: nowrap;">Total Abnormality At The Puncture Site</th>
+            <th style="white-space: nowrap;">Total Bloating</th>
+            <th style="white-space: nowrap;">Proportion Of Skin Itching</th>
+            <th style="white-space: nowrap;">Proportion Of Delayed Recovery From Anesthesia</th>
+            <th style="white-space: nowrap;">Proportion Of Abnormality At The Puncture Site</th>
+            <th style="white-space: nowrap;">Proportion Of Bloating</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${totalAdverse}">0</td>
+            <td th:text="${totalNauseaAndVomiting}">0</td>
+            <td th:text="${totalDizziness}">0</td>
+            <td th:text="${totalNauseaVomitingDizziness}">0</td>
+            <td th:text="${totalSkinItching}">0</td>
+            <td th:text="${proportionOfNauseaAndVomiting}">0</td>
+            <td th:text="${proportionDizziness}">0</td>
+            <td th:text="${proportionOfNauseaVomitingDizziness}">0</td>
+            <td th:text="${proportionOfSkinItching}">0</td>
+            <td th:text="${totalDelayedRecoveryFromAnesthesia}">0</td>
+            <td th:text="${totalAbnormalityAtThePunctureSite}">0</td>
+            <td th:text="${totalBloating}">0</td>
+            <td th:text="${proportionOfSkinItching}">0</td>
+            <td th:text="${proportionOfDelayedRecoveryFromAnesthesia}">0</td>
+            <td th:text="${proportionOfAbnormalityAtThePunctureSite}">0</td>
+            <td th:text="${proportionOfBloating}">0</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
