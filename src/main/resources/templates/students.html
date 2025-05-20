@@ -3,236 +3,514 @@
 <head>
     <meta charset="UTF-8">
     <title>Student Dashboard</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Chart.js (optional) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<h1>Student List</h1>
+<div class="container my-4">
+    <h1 class="mb-4 text-center text-primary">After Surgery Dashboard</h1>
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th><th>Name</th><th>Age</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="student : ${students}">
-        <td th:text="${student.id}">ID</td>
-        <td th:text="${student.name}">Name</td>
-        <td th:text="${student.age}">Age</td>
-    </tr>
-    </tbody>
-</table>
+    <!-- Table 1: Raw After Surgery Records -->
+    <h2 class="h4 mt-4 mb-3">After Surgery Records</h2>
+    <button class="btn btn-outline-primary btn-sm mb-2" onclick="downloadCSV('afterSurgeryTable', 'after_surgery_records.csv')">
+        Export to CSV
+    </button>
+    <div class="mb-3 d-flex flex-wrap align-items-end gap-2">
+        <div>
+            <label for="startDate" class="form-label mb-0">Start Date</label>
+            <input type="date" id="startDate" class="form-control form-control-sm" />
+        </div>
+        <div>
+            <label for="endDate" class="form-label mb-0">End Date</label>
+            <input type="date" id="endDate" class="form-control form-control-sm" />
+        </div>
+        <button onclick="filterByDate()" class="btn btn-sm btn-primary">Filter</button>
+        <button onclick="resetDateFilter()" class="btn btn-sm btn-secondary">Reset</button>
+    </div>
 
-<h2>Total Age: <span th:text="${totalAge}">0</span></h2>
+    <div class="table-responsive mb-4">
+        <table id="afterSurgeryTable" class="table table-bordered table-striped table-hover text-center align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Post-op Visits</th>
+                <th>Analgesia Cases</th>
+                <th>Adverse Reactions</th>
+                <th>Nausea & Vomiting</th>
+                <th>Dizziness</th>
+                <th>Nausea+Vomiting+Dizziness</th>
+                <th>Skin Itching</th>
+                <th>Allergic Rash</th>
+                <th>Delayed Recovery</th>
+                <th>Puncture Site Abnormality</th>
+                <th>Bloating</th>
+                <th>Other Conditions</th>
+                <th>Critically Ill Follow-ups</th>
+                <th>Poor Analgesic Effect</th>
+                <th>Total Critically Ill Visits</th>
+                <th>Joint Complications</th>
+                <th>Motor Dysfunction</th>
+                <th>Wound Complications</th>
+                <th>Foot & Ankle Complications</th>
+                <th>Pediatric Adverse Events</th>
+                <th>Spinal Complications</th>
+                <th>Hand Surgery Complications</th>
+                <th>Formula One</th>
+                <th>Formula Two</th>
+                <th>Formula Three</th>
+                <th>Formula Four</th>
+                <th>Formula Five</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="rec : ${afterSurgeryRecords}">
+                <td th:text="${rec.id}"></td>
+                <td th:text="${rec.date}" style="white-space: nowrap;"></td>
+                <td th:text="${rec.numOfPostoperativeVisits}"></td>
+                <td th:text="${rec.numOfPostoperativeAnalgesiaCases}"></td>
+                <td th:text="${rec.numOfAdverseReactionCases}"></td>
+                <td th:text="${rec.nauseaAndVomiting}"></td>
+                <td th:text="${rec.dizziness}"></td>
+                <td th:text="${rec.nauseaVomitingDizziness}"></td>
+                <td th:text="${rec.skinItching}"></td>
+                <td th:text="${rec.allergicRash}"></td>
+                <td th:text="${rec.delayedRecoveryFromAnesthesia}"></td>
+                <td th:text="${rec.abnormalityAtThePunctureSite}"></td>
+                <td th:text="${rec.bloating}"></td>
+                <td th:text="${rec.otherConditions}"></td>
+                <td th:text="${rec.numberOfFollowupVisitsForCriticallyIIIPatients}"></td>
+                <td th:text="${rec.poorAnalgesicEffect}"></td>
+                <td th:text="${rec.totalNumberOfCriticallyIIIPatientsVisited}"></td>
+                <td th:text="${rec.numberOfJointComplications}"></td>
+                <td th:text="${rec.numberOfMotorDysfunctionClass}"></td>
+                <td th:text="${rec.numberOfWoundComplications}"></td>
+                <td th:text="${rec.numberOfFootAndAnkleComplications}"></td>
+                <td th:text="${rec.numberOfPediatricAdverseEvents}"></td>
+                <td th:text="${rec.numberOfSpinalComplications}"></td>
+                <td th:text="${rec.numberOfHandSurgeryComplications}"></td>
+                <td th:text="${rec.formulaOne}"></td>
+                <td th:text="${rec.formulaTwo}"></td>
+                <td th:text="${rec.formulaThree}"></td>
+                <td th:text="${rec.formulaFour}"></td>
+                <td th:text="${rec.formulaFive}"></td>
+            </tr>
+            </tbody>
+        </table>
 
-<h2>Age Scatter Plot (ID vs Age)</h2>
-<canvas id="ageChart" width="600" height="300"></canvas>
+    </div>
+    <div class="mt-4">
+        <h5>Analgesia Cases per Record</h5>
+        <div style="overflow-x: auto;">
+            <canvas id="analgesiaChart" height="200" style="min-width: 800px;"></canvas>
+        </div>
+    </div>
 
+    <!-- Table 2: Adverse Reaction Proportion -->
+    <h2  class="h4 mt-5 mb-3">After Surgery – Adverse Reaction Proportion</h2>
+    <button class="btn btn-outline-primary btn-sm mb-2" onclick="downloadCSV('afterSurgeryAdverseReactionProportion', 'afterSurgeryAdverseReactionProportion.csv')">
+        Export to CSV
+    </button>
+    <div class="table-responsive mb-4">
+        <table id="afterSurgeryAdverseReactionProportion" class="table table-bordered table-striped table-hover text-center align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Analgesia Cases</th>
+                <th>Adverse Reactions</th>
+                <th>Proportion of Adverse Reactions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="rec : ${afterSurgeryRecords}">
+                <td th:text="${rec.id}"></td>
+                <td th:text="${rec.date}" style="white-space: nowrap;"></td>
+                <td th:text="${rec.numOfPostoperativeAnalgesiaCases}"></td>
+                <td th:text="${rec.numOfAdverseReactionCases}"></td>
+                <td th:text="${rec.numOfAdverseReactionCases != null and rec.numOfPostoperativeAnalgesiaCases != null and rec.numOfPostoperativeAnalgesiaCases > 0
+    ? #numbers.formatDecimal(rec.numOfAdverseReactionCases.doubleValue() / rec.numOfPostoperativeAnalgesiaCases.doubleValue(), 1, 3) : 'N/A'}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <h5 class="mt-4">Adverse Reaction Proportion (Pie Chart)</h5>
+        <div style="width :50%; margin: auto;">
+            <canvas id="adversePieChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Table 3: Total and Percentages -->
+    <h2 class="h4 mt-5 mb-3">After Surgery – Total and Percentage</h2>
+    <button class="btn btn-outline-primary btn-sm mb-2" onclick="downloadCSV('afterSurgeryTotalAndPercentage', 'afterSurgeryTotalAndPercentage.csv')">
+        Export to CSV
+    </button>
+    <div class="table-responsive mb-4">
+        <table id="afterSurgeryTotalAndPercentage" class="table table-bordered table-striped table-hover text-center align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>Total Post-op Visits</th>
+                <th>Total Analgesia Cases</th>
+                <th>Total Adverse Reactions</th>
+                <th>Total Poor Analgesic Effect</th>
+                <th>Total Followup Visits For CriticallyIII Patients</th>
+                <th>Proportion Of Postoperative Analgesia</th>
+                <th>Overall Adverse Reaction Rate</th>
+                <th>Postoperative Analgesia Satisfaction Rate</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${totalVisits}">0</td>
+                <td th:text="${totalAnalgesia}">0</td>
+                <td th:text="${totalAdverse}">0</td>
+                <td th:text="${totalPoorAnalgesicEffect}">0</td>
+                <td th:text="${totalNumberOfFollowupVisitsForCriticallyIIIPatients}">0</td>
+                <td th:text="${proportionOfPostoperativeAnalgesia}">0</td>
+                <td th:text="${overallAdverseReactionRate}">0</td>
+                <td th:text="${postoperativeAnalgesiaSatisfactionRate}">0</td>
+            </tr>
+            </tbody>
+        </table>
+        <h5 class="mt-4">Total Metrics Comparison</h5>
+        <div style="max-width: 600px; margin: auto;">
+            <canvas id="summaryTotalsChart"></canvas>
+        </div>
+        <div style="max-width: 600px; margin: auto;">
+            <canvas id="summaryTotalsChartOne"></canvas>
+        </div>
+    </div>
+
+    <!-- Table 4: Total and Percentage – Table 2 -->
+    <h2 class="h4 mt-5 mb-3">After Surgery – Total and Percentage - Table 2</h2>
+    <button class="btn btn-outline-primary btn-sm mb-2" onclick="downloadCSV('afterSurgeryTotalAndPercentageTable2', 'afterSurgeryTotalAndPercentageTable2.csv')">
+        Export to CSV
+    </button>
+    <div class="table-responsive mb-4">
+        <table id="afterSurgeryTotalAndPercentageTable2" class="table table-bordered table-striped table-hover text-center align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>Total Adverse Reactions</th>
+                <th>Total Nausea And Vomiting</th>
+                <th>Total Dizziness</th>
+                <th>Total Nausea Vomiting Dizziness</th>
+                <th>Total Skin Itching</th>
+                <th>Proportion Of Nausea And Vomiting</th>
+                <th>Proportion Dizziness</th>
+                <th>Proportion Of NauseaVomitingDizziness</th>
+                <th>Proportion Of Skin Itching</th>
+                <th>Total Delayed Recovery</th>
+                <th>Total Puncture Site Abnormality</th>
+                <th>Total Bloating</th>
+                <th>Proportion Of Skin Itching</th>
+                <th>Proportion Of Delayed Recovery</th>
+                <th>Proportion Of Puncture Abnormality</th>
+                <th>Proportion Of Bloating</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${totalAdverse}">0</td>
+                <td th:text="${totalNauseaAndVomiting}">0</td>
+                <td th:text="${totalDizziness}">0</td>
+                <td th:text="${totalNauseaVomitingDizziness}">0</td>
+                <td th:text="${totalSkinItching}">0</td>
+                <td th:text="${proportionOfNauseaAndVomiting}">0</td>
+                <td th:text="${proportionDizziness}">0</td>
+                <td th:text="${proportionOfNauseaVomitingDizziness}">0</td>
+                <td th:text="${proportionOfSkinItching}">0</td>
+                <td th:text="${totalDelayedRecoveryFromAnesthesia}">0</td>
+                <td th:text="${totalAbnormalityAtThePunctureSite}">0</td>
+                <td th:text="${totalBloating}">0</td>
+                <td th:text="${proportionOfSkinItching}">0</td>
+                <td th:text="${proportionOfDelayedRecoveryFromAnesthesia}">0</td>
+                <td th:text="${proportionOfAbnormalityAtThePunctureSite}">0</td>
+                <td th:text="${proportionOfBloating}">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Table 5: Total and Percentage – Table 3 -->
+    <h2 class="h4 mt-5 mb-3">After Surgery – Total and Percentage - Table 3</h2>
+    <button class="btn btn-outline-primary btn-sm mb-2" onclick="downloadCSV('afterSurgeryTotalAndPercentageTable3', 'afterSurgeryTotalAndPercentageTable3.csv')">
+        Export to CSV
+    </button>
+    <div class="table-responsive mb-4">
+        <table id="afterSurgeryTotalAndPercentageTable3" class="table table-bordered table-striped table-hover text-center align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>Total Adverse Reactions</th>
+                <th>Total Joint Complications</th>
+                <th>Total Motor Dysfunction</th>
+                <th>Total Wound Complications</th>
+                <th>Total Foot & Ankle Complications</th>
+                <th>Proportion Joint</th>
+                <th>Proportion Motor</th>
+                <th>Proportion Wound</th>
+                <th>Proportion Foot & Ankle</th>
+                <th>Total Pediatric Events</th>
+                <th>Total Spinal Complications</th>
+                <th>Total Hand Surgery Complications</th>
+                <th>Proportion Pediatric</th>
+                <th>Proportion Spinal</th>
+                <th>Proportion Hand</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${totalAdverse}">0</td>
+                <td th:text="${totalNumberOfJointComplications}">0</td>
+                <td th:text="${totalNumberOfMotorDysfunctionClass}">0</td>
+                <td th:text="${totalNumberOfWoundComplications}">0</td>
+                <td th:text="${totalNumberOfFootAndAnkleComplications}">0</td>
+                <td th:text="${proportionOfJointComplications}">0</td>
+                <td th:text="${proportionOfMotorDysfunctionClass}">0</td>
+                <td th:text="${proportionOfWoundComplications}">0</td>
+                <td th:text="${proportionOfFootAndAnkleComplications}">0</td>
+                <td th:text="${totalNumberOfPediatricAdverseEvents}">0</td>
+                <td th:text="${totalNumberOfSpinalComplications}">0</td>
+                <td th:text="${totalNumberOfHandSurgeryComplications}">0</td>
+                <td th:text="${proportionOfPediatricAdverseEvents}">0</td>
+                <td th:text="${proportionOfSpinalComplications}">0</td>
+                <td th:text="${proportionOfHandSurgeryComplications}">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- CSV Export Script -->
+<script>
+    function downloadCSV(tableId, filename) {
+        const table = document.getElementById(tableId);
+        if (!table) return;
+
+        let csv = [];
+        const rows = table.querySelectorAll("tr");
+        for (let row of rows) {
+            let cols = row.querySelectorAll("th, td");
+            let rowData = [];
+            for (let col of cols) {
+                let text = col.innerText.replace(/"/g, '""');
+                rowData.push(`"${text}"`);
+            }
+            csv.push(rowData.join(","));
+        }
+
+        const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+        const link = document.createElement("a");
+        link.setAttribute("href", encodeURI(csvContent));
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
 <script th:inline="javascript">
-    const dataPoints = /*[[${points}]]*/ [];
+    const analgesiaLabels = /*[[${afterSurgeryRecords}]]*/ [];
+    const labels = analgesiaLabels.map(r => r.date); // or r.id
+    const data = analgesiaLabels.map(r => r.numOfPostoperativeAnalgesiaCases);
 
-    const ctx = document.getElementById('ageChart').getContext('2d');
+    const ctx = document.getElementById('analgesiaChart').getContext('2d');
     new Chart(ctx, {
-        type: 'scatter',
+        type: 'bar',
         data: {
+            labels: labels,
             datasets: [{
-                label: 'Student (ID vs Age)',
-                data: dataPoints,
-                backgroundColor: 'rgba(75, 192, 192, 0.7)'
+                label: 'Analgesia Cases',
+                data: data,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
             }]
         },
         options: {
+            responsive: true,
             scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Student ID'
-                    }
+                x: { title: { display: true, text: 'Date' } },
+                y: { title: { display: true, text: 'Analgesia Cases' }, beginAtZero: true }
+            }
+        }
+    });
+</script>
+<script th:inline="javascript">
+    const pieRecords = /*[[${afterSurgeryRecords}]]*/ [];
+    const pieLabels = pieRecords.map(r => r.date); // or use r.id
+    const pieData = pieRecords.map(r => {
+        const a = r.numOfAdverseReactionCases;
+        const b = r.numOfPostoperativeAnalgesiaCases;
+        return (a && b && b > 0) ? a / b : 0;
+    });
+
+    new Chart(document.getElementById("adversePieChart"), {
+        type: 'pie',
+        data: {
+            labels: pieLabels,
+            datasets: [{
+                label: "Adverse Reaction Proportion",
+                data: pieData,
+                backgroundColor: pieLabels.map(() =>
+                    `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`
+                ),
+                borderColor: "#fff",
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'right'
                 },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Age'
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const val = context.raw;
+                            return context.label + ': ' + (val * 100).toFixed(1) + '%';
+                        }
                     }
                 }
             }
         }
     });
 </script>
+<script th:inline="javascript">
+    window.addEventListener('load', function () {
+        const totalVisits = /*[[${totalVisits}]]*/ 0;
+        const totalAnalgesia = /*[[${totalAnalgesia}]]*/ 0;
+        const totalAdverse = /*[[${totalAdverse}]]*/ 0;
 
-<h2>After Surgery Records</h2>
-<!-- Wrapper div for horizontal scroll -->
-<div style="overflow-x: auto; border: 1px solid #ccc; padding: 10px;">
-    <table border="1" style="border-collapse: collapse; min-width: 1200px;">
-        <thead style="background-color: #f2f2f2;">
-        <tr>
-            <th style="white-space: nowrap;">ID</th>
-            <th style="white-space: nowrap;">Date</th>
-            <th style="white-space: nowrap;">Post-op Visits</th>
-            <th style="white-space: nowrap;">Analgesia Cases</th>
-            <th style="white-space: nowrap;">Adverse Reactions</th>
-            <th style="white-space: nowrap;">Nausea & Vomiting</th>
-            <th style="white-space: nowrap;">Dizziness</th>
-            <th style="white-space: nowrap;">Nausea+Vomiting+Dizziness</th>
-            <th style="white-space: nowrap;">Skin Itching</th>
-            <th style="white-space: nowrap;">Allergic Rash</th>
-            <th style="white-space: nowrap;">Delayed Recovery</th>
-            <th style="white-space: nowrap;">Puncture Site Abnormality</th>
-            <th style="white-space: nowrap;">Bloating</th>
-            <th style="white-space: nowrap;">Other Conditions</th>
-            <th style="white-space: nowrap;">Critically Ill Follow-ups</th>
-            <th style="white-space: nowrap;">Poor Analgesic Effect</th>
-            <th style="white-space: nowrap;">Total Critically Ill Visits</th>
-            <th style="white-space: nowrap;">Joint Complications</th>
-            <th style="white-space: nowrap;">Motor Dysfunction</th>
-            <th style="white-space: nowrap;">Wound Complications</th>
-            <th style="white-space: nowrap;">Foot & Ankle Complications</th>
-            <th style="white-space: nowrap;">Pediatric Adverse Events</th>
-            <th style="white-space: nowrap;">Spinal Complications</th>
-            <th style="white-space: nowrap;">Hand Surgery Complications</th>
-            <th style="white-space: nowrap;">Formula One</th>
-            <th style="white-space: nowrap;">Formula Two</th>
-            <th style="white-space: nowrap;">Formula Three</th>
-            <th style="white-space: nowrap;">Formula Four</th>
-            <th style="white-space: nowrap;">Formula Five</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="rec : ${afterSurgeryRecords}">
-            <td th:text="${rec.id}">ID</td>
-            <td th:text="${rec.date}" style="white-space: nowrap;">Date</td>
-            <td th:text="${rec.numOfPostoperativeVisits}">Visits</td>
-            <td th:text="${rec.numOfPostoperativeAnalgesiaCases}">Analgesia</td>
-            <td th:text="${rec.numOfAdverseReactionCases}">Adverse</td>
-            <td th:text="${rec.nauseaAndVomiting}">Nausea</td>
-            <td th:text="${rec.dizziness}">Dizziness</td>
-            <td th:text="${rec.nauseaVomitingDizziness}">Combined Symptoms</td>
-            <td th:text="${rec.skinItching}">Itching</td>
-            <td th:text="${rec.allergicRash}">Rash</td>
-            <td th:text="${rec.delayedRecoveryFromAnesthesia}">Delayed Recovery</td>
-            <td th:text="${rec.abnormalityAtThePunctureSite}">Puncture Site</td>
-            <td th:text="${rec.bloating}">Bloating</td>
-            <td th:text="${rec.otherConditions}">Other</td>
-            <td th:text="${rec.numberOfFollowupVisitsForCriticallyIIIPatients}">Critical F/U</td>
-            <td th:text="${rec.poorAnalgesicEffect}">Poor Analgesia</td>
-            <td th:text="${rec.totalNumberOfCriticallyIIIPatientsVisited}">Total Critical</td>
-            <td th:text="${rec.numberOfJointComplications}">Joint</td>
-            <td th:text="${rec.numberOfMotorDysfunctionClass}">Motor</td>
-            <td th:text="${rec.numberOfWoundComplications}">Wound</td>
-            <td th:text="${rec.numberOfFootAndAnkleComplications}">Foot/Ankle</td>
-            <td th:text="${rec.numberOfPediatricAdverseEvents}">Pediatric</td>
-            <td th:text="${rec.numberOfSpinalComplications}">Spinal</td>
-            <td th:text="${rec.numberOfHandSurgeryComplications}">Hand</td>
-            <td th:text="${rec.formulaOne}">Formula 1</td>
-            <td th:text="${rec.formulaTwo}">Formula 2</td>
-            <td th:text="${rec.formulaThree}">Formula 3</td>
-            <td th:text="${rec.formulaFour}">Formula 4</td>
-            <td th:text="${rec.formulaFive}">Formula 5</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<h2>After Surgery – Adverse Reaction Proportion</h2>
+        const ctx = document.getElementById("summaryTotalsChart");
+        if (!ctx) {
+            console.error("Canvas not found!");
+            return;
+        }
 
-<div style="overflow-x: auto; border: 1px solid #ccc; padding: 10px;">
-    <table border="1" style="border-collapse: collapse; min-width: 1200px;">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Analgesia Cases</th>
-            <th>Adverse Reactions</th>
-            <th>Proportion of Adverse Reactions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="row : ${afterSurgerySummaries}">
-            <td th:text="${row.id}">ID</td>
-            <td th:text="${row.date}" style="white-space: nowrap;">Date</td>
-            <td th:text="${row.analgesiaCases}">Analgesia</td>
-            <td th:text="${row.adverseReactions}">Adverse</td>
-            <td th:text="${row.adverseReactionRate != null ? #numbers.formatDecimal(row.adverseReactionRate, 1, 3) : 'N/A'}">
-                Proportion
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+        new Chart(ctx.getContext("2d"), {
+            type: 'bar',
+            data: {
+                labels: ["Post-op Visits", "Analgesia Cases", "Adverse Reactions"],
+                datasets: [{
+                    label: 'Total Count',
+                    data: [totalVisits, totalAnalgesia, totalAdverse],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Total Count'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    });
+</script>
+<script th:inline="javascript">
+    window.addEventListener('load', function () {
+        const proportionOfPostoperativeAnalgesia = /*[[${proportionOfPostoperativeAnalgesia}]]*/ 0;
+        const overallAdverseReactionRate = /*[[${overallAdverseReactionRate}]]*/ 0;
+        const postoperativeAnalgesiaSatisfactionRate = /*[[${postoperativeAnalgesiaSatisfactionRate}]]*/ 0;
 
-<h2>After Surgery – Total and Percentage</h2>
-<div style="overflow-x: auto; border: 1px solid #ccc; padding: 10px;">
-    <table border="1" style="border-collapse: collapse; min-width: 1200px;">
-        <thead>
-        <tr>
-            <th>Total Post-op Visits</th>
-            <th>Total Analgesia Cases</th>
-            <th>Total Adverse Reactions</th>
-            <th>Total Poor Analgesic Effect</th>
-            <th>Total Followup Visits For CriticallyIII Patients</th>
-            <th>Proportion Of Postoperative Analgesia</th>
-            <th>Overall Adverse Reaction Rate</th>
-            <th>Postoperative Analgesia Satisfaction Rate</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td th:text="${totalVisits}">0</td>
-            <td th:text="${totalAnalgesia}">0</td>
-            <td th:text="${totalAdverse}">0</td>
-            <td th:text="${totalPoorAnalgesicEffect}">0</td>
-            <td th:text="${totalNumberOfFollowupVisitsForCriticallyIIIPatients}">0</td>
-            <td th:text="${proportionOfPostoperativeAnalgesia}">0</td>
-            <td th:text="${overallAdverseReactionRate}">0</td>
-            <td th:text="${postoperativeAnalgesiaSatisfactionRate}">0</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+        const ctx = document.getElementById("summaryTotalsChartOne");
+        if (!ctx) {
+            console.error("Canvas not found!");
+            return;
+        }
 
-<h2>After Surgery – Total and Percentage - Table 2</h2>
-<div style="overflow-x: auto; border: 1px solid #ccc; padding: 10px;">
-    <table border="1" style="border-collapse: collapse; min-width: 1200px;">
-        <thead>
-        <tr>
-            <th style="white-space: nowrap;">Total Adverse Reactions</th>
-            <th style="white-space: nowrap;">Total Nausea And Vomiting</th>
-            <th style="white-space: nowrap;">Total Dizziness</th>
-            <th style="white-space: nowrap;">Total Nausea Vomiting Dizziness</th>
-            <th style="white-space: nowrap;">Total Skin Itching</th>
-            <th style="white-space: nowrap;">Proportion Of Nausea And Vomiting</th>
-            <th style="white-space: nowrap;">Proportion Dizziness</th>
-            <th style="white-space: nowrap;">Proportion Of NauseaVomitingDizziness</th>
-            <th style="white-space: nowrap;">Proportion Of Skin Itching</th>
-            <th style="white-space: nowrap;">Total Delayed Recovery From Anesthesia</th>
-            <th style="white-space: nowrap;">Total Abnormality At The Puncture Site</th>
-            <th style="white-space: nowrap;">Total Bloating</th>
-            <th style="white-space: nowrap;">Proportion Of Skin Itching</th>
-            <th style="white-space: nowrap;">Proportion Of Delayed Recovery From Anesthesia</th>
-            <th style="white-space: nowrap;">Proportion Of Abnormality At The Puncture Site</th>
-            <th style="white-space: nowrap;">Proportion Of Bloating</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td th:text="${totalAdverse}">0</td>
-            <td th:text="${totalNauseaAndVomiting}">0</td>
-            <td th:text="${totalDizziness}">0</td>
-            <td th:text="${totalNauseaVomitingDizziness}">0</td>
-            <td th:text="${totalSkinItching}">0</td>
-            <td th:text="${proportionOfNauseaAndVomiting}">0</td>
-            <td th:text="${proportionDizziness}">0</td>
-            <td th:text="${proportionOfNauseaVomitingDizziness}">0</td>
-            <td th:text="${proportionOfSkinItching}">0</td>
-            <td th:text="${totalDelayedRecoveryFromAnesthesia}">0</td>
-            <td th:text="${totalAbnormalityAtThePunctureSite}">0</td>
-            <td th:text="${totalBloating}">0</td>
-            <td th:text="${proportionOfSkinItching}">0</td>
-            <td th:text="${proportionOfDelayedRecoveryFromAnesthesia}">0</td>
-            <td th:text="${proportionOfAbnormalityAtThePunctureSite}">0</td>
-            <td th:text="${proportionOfBloating}">0</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+        new Chart(ctx.getContext("2d"), {
+            type: 'bar',
+            data: {
+                labels: ["POPA", "OARR", "PASR"],
+                datasets: [{
+                    label: 'Total Count',
+                    data: [proportionOfPostoperativeAnalgesia, overallAdverseReactionRate, postoperativeAnalgesiaSatisfactionRate],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Total Count'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    });
+</script>
+<script>
+    function filterByDate() {
+        const start = document.getElementById("startDate").value;
+        const end = document.getElementById("endDate").value;
+        const rows = document.querySelectorAll("#afterSurgeryTable tbody tr");
+
+        rows.forEach(row => {
+            const dateCell = row.cells[1]; // 2nd column is Date
+            const rowDate = dateCell.textContent.trim();
+            if (!rowDate) return row.style.display = "none";
+
+            const rowDateObj = new Date(rowDate);
+            const startDateObj = start ? new Date(start) : null;
+            const endDateObj = end ? new Date(end) : null;
+
+            const inRange =
+                (!startDateObj || rowDateObj >= startDateObj) &&
+                (!endDateObj || rowDateObj <= endDateObj);
+
+            row.style.display = inRange ? "" : "none";
+        });
+    }
+
+    function resetDateFilter() {
+        document.getElementById("startDate").value = "";
+        document.getElementById("endDate").value = "";
+        const rows = document.querySelectorAll("#afterSurgeryTable tbody tr");
+        rows.forEach(row => row.style.display = "");
+    }
+</script>
+
+
+<!-- Bootstrap 5 JS Bundle (Optional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

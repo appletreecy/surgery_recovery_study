@@ -128,6 +128,51 @@ public class WelcomeController {
         float proportionOfAbnormalityAtThePunctureSite = (float) totalAbnormalityAtThePunctureSite / totalAdverse;
         float proportionOfBloating = (float) totalBloating / totalAdverse;
 
+        // Table -- After Surgery - Total and Percentage - 3
+        int totalNumberOfFootAndAnkleComplications = records.stream()
+                .filter(r -> r.getNumberOfFootAndAnkleComplications() != null)
+                .mapToInt(AfterSurgery::getNumberOfFootAndAnkleComplications)
+                .sum();
+
+        int totalNumberOfJointComplications = records.stream()
+                .filter(r -> r.getNumberOfJointComplications() != null)
+                .mapToInt(AfterSurgery::getNumberOfJointComplications)
+                .sum();
+
+        int totalNumberOfMotorDysfunctionClass = records.stream()
+                .filter(r -> r.getNumberOfMotorDysfunctionClass() != null)
+                .mapToInt(AfterSurgery::getNumberOfMotorDysfunctionClass)
+                .sum();
+
+        int totalNumberOfWoundComplications = records.stream()
+                .filter(r -> r.getNumberOfWoundComplications() != null)
+                .mapToInt(AfterSurgery::getNumberOfWoundComplications)
+                .sum();
+
+        float proportionOfJointComplications = (float) totalNumberOfJointComplications / totalAdverse;
+        float proportionOfMotorDysfunctionClass = (float) totalNumberOfMotorDysfunctionClass / totalAdverse;
+        float proportionOfWoundComplications = (float) totalNumberOfWoundComplications / totalAdverse;
+        float proportionOfFootAndAnkleComplications = (float) totalNumberOfFootAndAnkleComplications / totalAdverse;
+
+        int totalNumberOfPediatricAdverseEvents = records.stream()
+                .filter(r -> r.getNumberOfPediatricAdverseEvents() != null)
+                .mapToInt(AfterSurgery::getNumberOfPediatricAdverseEvents)
+                .sum();
+        int totalNumberOfSpinalComplications = records.stream()
+                .filter(r -> r.getNumberOfSpinalComplications() != null)
+                .mapToInt(AfterSurgery::getNumberOfSpinalComplications)
+                .sum();
+        int totalNumberOfHandSurgeryComplications = records.stream()
+                .filter(r -> r.getNumberOfHandSurgeryComplications() != null)
+                .mapToInt(AfterSurgery::getNumberOfHandSurgeryComplications)
+                .sum();
+
+        float proportionOfPediatricAdverseEvents = (float) totalNumberOfPediatricAdverseEvents / totalAdverse;
+        float proportionOfSpinalComplications = (float) totalNumberOfSpinalComplications / totalAdverse;
+        float proportionOfHandSurgeryComplications = (float) totalNumberOfHandSurgeryComplications / totalAdverse;
+
+
+
 
         model.addAttribute("students", students);
         model.addAttribute("totalAge", totalAge);
@@ -157,6 +202,23 @@ public class WelcomeController {
         model.addAttribute("proportionOfDelayedRecoveryFromAnesthesia", proportionOfDelayedRecoveryFromAnesthesia);
         model.addAttribute("proportionOfAbnormalityAtThePunctureSite", proportionOfAbnormalityAtThePunctureSite);
         model.addAttribute("proportionOfBloating", proportionOfBloating);
+
+        // Table -- After Surgery - Total and Percentage - 3
+        model.addAttribute("totalNumberOfFootAndAnkleComplications", totalNumberOfFootAndAnkleComplications);
+        model.addAttribute("totalNumberOfJointComplications", totalNumberOfJointComplications);
+        model.addAttribute("totalNumberOfMotorDysfunctionClass", totalNumberOfMotorDysfunctionClass);
+        model.addAttribute("totalNumberOfWoundComplications", totalNumberOfWoundComplications);
+        model.addAttribute("proportionOfJointComplications", proportionOfJointComplications);
+        model.addAttribute("proportionOfMotorDysfunctionClass", proportionOfMotorDysfunctionClass);
+        model.addAttribute("proportionOfWoundComplications", proportionOfWoundComplications);
+        model.addAttribute("proportionOfFootAndAnkleComplications", proportionOfFootAndAnkleComplications);
+        model.addAttribute("totalNumberOfPediatricAdverseEvents", totalNumberOfPediatricAdverseEvents);
+        model.addAttribute("totalNumberOfSpinalComplications", totalNumberOfSpinalComplications);
+        model.addAttribute("totalNumberOfHandSurgeryComplications", totalNumberOfHandSurgeryComplications);
+        model.addAttribute("proportionOfPediatricAdverseEvents", proportionOfPediatricAdverseEvents);
+        model.addAttribute("proportionOfSpinalComplications", proportionOfSpinalComplications);
+        model.addAttribute("proportionOfHandSurgeryComplications", proportionOfHandSurgeryComplications);
+
 
 
         return "students";
