@@ -11,7 +11,40 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<div class="container my-4">
+
+<style>
+    @media (min-width: 1400px) {
+      .px-xxl-20 {
+        padding-left: 50rem;
+        padding-right: 50rem;
+      }
+    }
+</style>
+
+<div class="container-fluid px-2 px-md-5 px-lg-6 px-xxl-20">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">After Surgery Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/afterSurgery/add}">Add Record</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/afterSurgery/delete}">Delete Record</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <h1 class="mb-4 text-center text-primary">After Surgery Dashboard</h1>
 
     <!-- Table 1: Raw After Surgery Records -->
