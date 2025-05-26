@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,9 @@ public class WelcomeController {
                 .collect(Collectors.toList());
 
         List<AfterSurgery> records = afterSurgeryRepository.findAll();
+
+        // 👉 Insert this line to sort by date (ascending)
+        records.sort(Comparator.comparing(AfterSurgery::getDate));
 
         List<AfterSurgerySummary> summaries = records.stream()
                         .map(r -> new AfterSurgerySummary(

@@ -39,6 +39,9 @@
                         <a class="nav-link" th:href="@{/afterSurgery/add}">Add Record</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" th:href="@{/afterSurgery/editone}">Edit Record</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" th:href="@{/afterSurgery/delete}">Delete Record</a>
                     </li>
                 </ul>
@@ -98,6 +101,7 @@
                 <th>Formula Three</th>
                 <th>Formula Four</th>
                 <th>Formula Five</th>
+                <th>Edit Record</th>
             </tr>
             </thead>
             <tbody>
@@ -131,6 +135,11 @@
                 <td th:text="${rec.formulaThree}"></td>
                 <td th:text="${rec.formulaFour}"></td>
                 <td th:text="${rec.formulaFive}"></td>
+                <td>
+                    <a th:href="@{/afterSurgery/edit/{id}(id=${rec.id})}" class="btn btn-sm btn-outline-primary">
+                        Edit
+                    </a>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -144,7 +153,7 @@
     </div>
 
     <!-- Table 2: Adverse Reaction Proportion -->
-    <h2  class="h4 mt-5 mb-3">After Surgery – Adverse Reaction Proportion</h2>
+    <h2  class="h4 mt-5 mb-3">Postoperative – Adverse Reaction Proportion</h2>
     <button class="btn btn-outline-primary btn-sm mb-2" onclick="downloadCSV('afterSurgeryAdverseReactionProportion', 'afterSurgeryAdverseReactionProportion.csv')">
         Export to CSV
     </button>
@@ -166,7 +175,9 @@
                 <td th:text="${rec.numOfPostoperativeAnalgesiaCases}"></td>
                 <td th:text="${rec.numOfAdverseReactionCases}"></td>
                 <td th:text="${rec.numOfAdverseReactionCases != null and rec.numOfPostoperativeAnalgesiaCases != null and rec.numOfPostoperativeAnalgesiaCases > 0
-    ? #numbers.formatDecimal(rec.numOfAdverseReactionCases.doubleValue() / rec.numOfPostoperativeAnalgesiaCases.doubleValue(), 1, 3) : 'N/A'}"></td>
+    ? #numbers.formatDecimal((rec.numOfAdverseReactionCases.doubleValue() / rec.numOfPostoperativeAnalgesiaCases.doubleValue()) * 100, 1, 2) + '%'
+    : 'N/A'}"></td>
+
             </tr>
             </tbody>
         </table>
@@ -177,7 +188,7 @@
     </div>
 
     <!-- Table 3: Total and Percentages -->
-    <h2 class="h4 mt-5 mb-3">After Surgery – Total and Percentage</h2>
+    <h2 class="h4 mt-5 mb-3">Postoperative – Total and Percentage</h2>
     <button class="btn btn-outline-primary btn-sm mb-2" onclick="downloadCSV('afterSurgeryTotalAndPercentage', 'afterSurgeryTotalAndPercentage.csv')">
         Export to CSV
     </button>
@@ -202,9 +213,10 @@
                     <td id="totalAdverseCell" th:text="${totalAdverse}">0</td>
                     <td id="totalPoorAnalgesicEffectCell" th:text="${totalPoorAnalgesicEffect}">0</td>
                     <td id="totalFollowupCell" th:text="${totalNumberOfFollowupVisitsForCriticallyIIIPatients}">0</td>
-                    <td id="proportionAnalgesiaCell" th:text="${proportionOfPostoperativeAnalgesia}">0</td>
-                    <td id="adverseReactionRateCell" th:text="${overallAdverseReactionRate}">0</td>
-                    <td id="satisFactionRateCell" th:text="${postoperativeAnalgesiaSatisfactionRate}">0</td>
+                    <td id="proportionAnalgesiaCell" th:text="${proportionOfPostoperativeAnalgesia != null ? #numbers.formatDecimal(proportionOfPostoperativeAnalgesia * 100, 1, 2) + '%' : 'N/A'}">0</td>
+
+                    <td id="adverseReactionRateCell" th:text="${overallAdverseReactionRate != null ? #numbers.formatDecimal(overallAdverseReactionRate * 100, 1, 2) + '%' : 'N/A'}">0</td>
+                    <td id="satisFactionRateCell" th:text="${postoperativeAnalgesiaSatisfactionRate != null ? #numbers.formatDecimal(postoperativeAnalgesiaSatisfactionRate * 100, 1, 2) + '%' : 'N/A'}">0</td>
                 </tr>
             </tbody>
         </table>
@@ -228,7 +240,7 @@
     <input type="hidden" id="initSatisFactionRate" th:value="${postoperativeAnalgesiaSatisfactionRate}">
 
     <!-- Table 4: Total and Percentage – Table 4 -->
-    <h2 class="h4 mt-5 mb-3">After Surgery – Total and Percentage - Table 4</h2>
+    <h2 class="h4 mt-5 mb-3">Postoperative – Total and Percentage - Table 4</h2>
     <button class="btn btn-outline-primary btn-sm mb-2" onclick="downloadCSV('afterSurgeryTotalAndPercentageTable2', 'afterSurgeryTotalAndPercentageTable2.csv')">
         Export to CSV
     </button>
@@ -261,17 +273,17 @@
                 <td id="table4totalDizziness" th:text="${totalDizziness}">0</td>
                 <td id="table4totalNauseaVomitingDizziness" th:text="${totalNauseaVomitingDizziness}">0</td>
                 <td id="table4totalSkinItching" th:text="${totalSkinItching}">0</td>
-                <td id="table4proportionOfNauseaAndVomiting" th:text="${proportionOfNauseaAndVomiting}">0</td>
-                <td id="table4proportionDizziness" th:text="${proportionDizziness}">0</td>
-                <td id="table4proportionOfNauseaVomitingDizziness" th:text="${proportionOfNauseaVomitingDizziness}">0</td>
-                <td id="table4proportionOfSkinItching" th:text="${proportionOfSkinItching}">0</td>
+                <td id="table4proportionOfNauseaAndVomiting" th:text="${proportionOfNauseaAndVomiting != null ? #numbers.formatDecimal(proportionOfNauseaAndVomiting * 100, 1, 2) + '%' : 'N/A'}">0</td>
+                <td id="table4proportionDizziness" th:text="${proportionDizziness != null ? #numbers.formatDecimal(proportionDizziness * 100, 1, 2) + '%' : 'N/A'}">0</td>
+                <td id="table4proportionOfNauseaVomitingDizziness" th:text="${proportionOfNauseaVomitingDizziness != null ? #numbers.formatDecimal(proportionOfNauseaVomitingDizziness * 100, 1, 2) + '%' : 'N/A'}">0</td>
+                <td id="table4proportionOfSkinItching" th:text="${proportionOfSkinItching != null ? #numbers.formatDecimal(proportionOfSkinItching * 100, 1, 2) + '%' : 'N/A'}">0</td>
                 <td id="table4totalDelayedRecoveryFromAnesthesia" th:text="${totalDelayedRecoveryFromAnesthesia}">0</td>
                 <td id="table4totalAbnormalityAtThePunctureSite" th:text="${totalAbnormalityAtThePunctureSite}">0</td>
                 <td id="table4totalBloating" th:text="${totalBloating}">0</td>
-                <td id="table4proportionOfSkinItching2" th:text="${proportionOfSkinItching}">0</td>
-                <td id="table4proportionOfDelayedRecoveryFromAnesthesia" th:text="${proportionOfDelayedRecoveryFromAnesthesia}">0</td>
-                <td id="table4proportionOfAbnormalityAtThePunctureSite" th:text="${proportionOfAbnormalityAtThePunctureSite}">0</td>
-                <td id="table4proportionOfBloating" th:text="${proportionOfBloating}">0</td>
+                <td id="table4proportionOfSkinItching2" th:text="${proportionOfSkinItching != null ? #numbers.formatDecimal(proportionOfSkinItching * 100, 1, 2) + '%' : 'N/A'}">0</td>
+                <td id="table4proportionOfDelayedRecoveryFromAnesthesia" th:text="${proportionOfDelayedRecoveryFromAnesthesia != null ? #numbers.formatDecimal(proportionOfDelayedRecoveryFromAnesthesia * 100, 1, 2) + '%' : 'N/A'}">0</td>
+                <td id="table4proportionOfAbnormalityAtThePunctureSite" th:text="${proportionOfAbnormalityAtThePunctureSite != null ? #numbers.formatDecimal(proportionOfAbnormalityAtThePunctureSite * 100, 1, 2) + '%' : 'N/A'}">0</td>
+                <td id="table4proportionOfBloating" th:text="${proportionOfBloating != null ? #numbers.formatDecimal(proportionOfBloating * 100, 1, 2) + '%' : 'N/A'}">0</td>
             </tr>
             </tbody>
         </table>
@@ -296,7 +308,7 @@
 
 
     <!-- Table 5: Total and Percentage – Table 5 -->
-    <h2 class="h4 mt-5 mb-3">After Surgery – Total and Percentage - Table 5</h2>
+    <h2 class="h4 mt-5 mb-3">Postoperative – Total and Percentage - Table 5</h2>
     <button class="btn btn-outline-primary btn-sm mb-2" onclick="downloadCSV('afterSurgeryTotalAndPercentageTable3', 'afterSurgeryTotalAndPercentageTable3.csv')">
         Export to CSV
     </button>
@@ -328,16 +340,16 @@
                 <td id="table5totalNumberOfMotorDysfunctionClass" th:text="${totalNumberOfMotorDysfunctionClass}">0</td>
                 <td id="table5totalNumberOfWoundComplications" th:text="${totalNumberOfWoundComplications}">0</td>
                 <td id="table5totalNumberOfFootAndAnkleComplications" th:text="${totalNumberOfFootAndAnkleComplications}">0</td>
-                <td id="table5proportionOfJointComplications" th:text="${proportionOfJointComplications}">0</td>
-                <td id="table5proportionOfMotorDysfunctionClass" th:text="${proportionOfMotorDysfunctionClass}">0</td>
-                <td id="table5proportionOfWoundComplications" th:text="${proportionOfWoundComplications}">0</td>
-                <td id="table5proportionOfFootAndAnkleComplications" th:text="${proportionOfFootAndAnkleComplications}">0</td>
+                <td id="table5proportionOfJointComplications" th:text="${proportionOfJointComplications != null ? #numbers.formatDecimal(proportionOfJointComplications * 100, 1, 2) + '%' : 'N/A'}">0</td>
+                <td id="table5proportionOfMotorDysfunctionClass" th:text="${proportionOfMotorDysfunctionClass != null ? #numbers.formatDecimal(proportionOfMotorDysfunctionClass * 100, 1, 2) + '%' : 'N/A'}">0</td>
+                <td id="table5proportionOfWoundComplications" th:text="${proportionOfWoundComplications != null ? #numbers.formatDecimal(proportionOfWoundComplications * 100, 1, 2) + '%' : 'N/A'}">0</td>
+                <td id="table5proportionOfFootAndAnkleComplications" th:text="${proportionOfFootAndAnkleComplications != null ? #numbers.formatDecimal(proportionOfFootAndAnkleComplications * 100, 1, 2) + '%' : 'N/A'}">0</td>
                 <td id="table5totalNumberOfPediatricAdverseEvents" th:text="${totalNumberOfPediatricAdverseEvents}">0</td>
                 <td id="table5totalNumberOfSpinalComplications" th:text="${totalNumberOfSpinalComplications}">0</td>
                 <td id="table5totalNumberOfHandSurgeryComplications" th:text="${totalNumberOfHandSurgeryComplications}">0</td>
-                <td id="table5proportionOfPediatricAdverseEvents" th:text="${proportionOfPediatricAdverseEvents}">0</td>
-                <td id="table5proportionOfSpinalComplications" th:text="${proportionOfSpinalComplications}">0</td>
-                <td id="table5proportionOfHandSurgeryComplications" th:text="${proportionOfHandSurgeryComplications}">0</td>
+                <td id="table5proportionOfPediatricAdverseEvents" th:text="${proportionOfPediatricAdverseEvents != null ? #numbers.formatDecimal(proportionOfPediatricAdverseEvents * 100, 1, 2) + '%' : 'N/A'}">0</td>
+                <td id="table5proportionOfSpinalComplications" th:text="${proportionOfSpinalComplications != null ? #numbers.formatDecimal(proportionOfSpinalComplications * 100, 1, 2) + '%' : 'N/A'}">0</td>
+                <td id="table5proportionOfHandSurgeryComplications" th:text="${proportionOfHandSurgeryComplications != null ? #numbers.formatDecimal(proportionOfHandSurgeryComplications * 100, 1, 2) + '%' : 'N/A'}">0</td>
             </tr>
             </tbody>
         </table>
@@ -711,15 +723,31 @@
         // Restore Table 2 rows
         document.querySelectorAll("#adverseReactionTableBody tr").forEach(row => row.style.display = "");
 
-        // Restore initial values for Table 3
+       // Restore initial values for Table 3
         const ids = [
             "totalVisits", "totalAnalgesia", "totalAdverse",
             "totalPoorAnalgesicEffect", "totalFollowup",
             "proportionAnalgesia", "adverseReactionRate", "satisFactionRate"
         ];
+
+        const percentFields = new Set([
+            "proportionAnalgesia", "adverseReactionRate", "satisFactionRate"
+        ]);
+
         ids.forEach(id => {
-            document.getElementById(id + "Cell").textContent = document.getElementById("init" + id.charAt(0).toUpperCase() + id.slice(1)).value;
+            const cell = document.getElementById(id + "Cell");
+            const hidden = document.getElementById("init" + id.charAt(0).toUpperCase() + id.slice(1));
+            if (cell && hidden) {
+                const raw = hidden.value;
+                if (percentFields.has(id)) {
+                    const num = parseFloat(raw);
+                    cell.textContent = isNaN(num) ? 'N/A' : (num * 100).toFixed(2) + '%';
+                } else {
+                    cell.textContent = raw;
+                }
+            }
         });
+
 
         // Restore Table 4 to initial values
         const table4Ids = [
@@ -730,15 +758,29 @@
             "proportionOfDelayedRecoveryFromAnesthesia", "proportionOfAbnormalityAtThePunctureSite", "proportionOfBloating"
         ];
 
+        // Identify proportion fields
+        const table4PercentFields = new Set([
+            "proportionOfNauseaAndVomiting", "proportionDizziness",
+            "proportionOfNauseaVomitingDizziness", "proportionOfSkinItching", "proportionOfSkinItching2",
+            "proportionOfDelayedRecoveryFromAnesthesia", "proportionOfAbnormalityAtThePunctureSite", "proportionOfBloating"
+        ]);
+
         table4Ids.forEach(id => {
             const cell = document.getElementById("table4" + id);
             const hidden = document.getElementById("init" + "table4" + id);
             if (cell && hidden) {
-                cell.textContent = hidden.value;
+                const raw = hidden.value;
+                if (table4PercentFields.has(id)) {
+                    const num = parseFloat(raw);
+                    cell.textContent = isNaN(num) ? 'N/A' : (num * 100).toFixed(2) + '%';
+                } else {
+                    cell.textContent = raw;
+                }
             }
         });
 
-        // Restore Table 4 to initial values
+
+        // Restore Table 5 to initial values
         const table5Ids = [
             "totalAdverse", "totalNumberOfJointComplications", "totalNumberOfMotorDysfunctionClass",
             "totalNumberOfWoundComplications", "totalNumberOfFootAndAnkleComplications",
@@ -749,14 +791,29 @@
             "proportionOfSpinalComplications", "proportionOfHandSurgeryComplications"
         ];
 
+        // Define which ones are percentage fields
+        const table5PercentageFields = new Set([
+            "proportionOfJointComplications", "proportionOfMotorDysfunctionClass",
+            "proportionOfWoundComplications", "proportionOfFootAndAnkleComplications",
+            "proportionOfPediatricAdverseEvents", "proportionOfSpinalComplications",
+            "proportionOfHandSurgeryComplications"
+        ]);
+
+        function formatPercent(value) {
+            const parsed = parseFloat(value);
+            return isNaN(parsed) ? 'N/A' : (parsed * 100).toFixed(2) + '%';
+        }
+
         table5Ids.forEach(id => {
             const cell = document.getElementById("table5" + id);
             const hidden = document.getElementById("init" + "table5" + id);
             if (cell && hidden) {
-                cell.textContent = hidden.value;
+                const raw = hidden.value;
+                cell.textContent = table5PercentageFields.has(id) ? formatPercent(raw) : raw;
             }
         });
-}
+    }
+
 </script>
 
 

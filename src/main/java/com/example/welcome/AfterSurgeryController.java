@@ -43,4 +43,29 @@ public class AfterSurgeryController {
         return "delete-afterSurgery";
     }
 
+    // GET: Show update form
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        AfterSurgery record = afterSurgeryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid ID: " + id));
+
+        System.out.println("Loaded date: " + record.getDate()); // 🔍 Check if null
+        model.addAttribute("afterSurgery", record);
+        return "edit-afterSurgery";
+    }
+
+    // POST: Handle update form submission
+    @PostMapping("/edit")
+    public String updateAfterSurgery(@ModelAttribute AfterSurgery record) {
+        afterSurgeryRepository.save(record);
+        return "redirect:/"; // Redirect to dashboard
+    }
+
+    // Get: Show update form one
+    @GetMapping("/editone")
+    public String showEditFormOne() {
+        return "edit-afterSurgeryOne";
+    }
+
+
 }
