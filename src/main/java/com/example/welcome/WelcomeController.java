@@ -227,4 +227,9 @@ public class WelcomeController {
 
         return "students";
     }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login"; // maps to login.html in templates
+    }
 }

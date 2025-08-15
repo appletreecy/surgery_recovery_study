@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Dashboard</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Chart.js (optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<style>
+  @media (min-width: 1400px) {
+    .px-xxl-20 {
+      padding-left: 50rem;
+      padding-right: 50rem;
+    }
+  }
+</style>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+
+  <div class="table-responsive mb-4">
+    <table id="afterSurgeryTableOne" class="table table-bordered table-striped table-hover text-center align-middle">
+      <thead class="table-light">
+      <tr>
+        <th>序号</th>
+        <th>日期</th>
+        <th>恶心呕吐</th>
+        <th>头晕</th>
+        <th>恶心呕吐头晕</th>
+        <th>皮肤瘙痒</th>
+        <th>过敏性皮疹</th>
+        <th>麻醉恢复迟滞</th>
+        <th>穿刺部位异常</th>
+        <th>腹胀</th>
+        <th>气插不适</th>
+        <th>胃脘痛</th>
+        <th>瞻望</th>
+        <th>心胸不适</th>
+        <th>止血带反应</th>
+        <th>其他</th>
+        <th>其他备注</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="rec : ${tableTwoRecords}">
+        <td th:text="${rec.id}"></td>
+        <td th:text="${rec.date}" style="white-space: nowrap;"></td>
+        <td th:text="${rec.numOfNauseaAndVomiting}"></td>
+        <td th:text="${rec.numOfDizziness}"></td>
+        <td th:text="${rec.numOfNauseaAndVomitingAndDizziness}"></td>
+        <td th:text="${rec.numOfItching}"></td>
+        <td th:text="${rec.numOfAllergicRash}"></td>
+        <td th:text="${rec.numOfProlongedAnestheticRecovery}"></td>
+        <td th:text="${rec.numOfPunctureSiteAbnormality}"></td>
+        <td th:text="${rec.numOfAbdominalDistension}"></td>
+        <td th:text="${rec.numOfEndotrachealIntubationDiscomfort}"></td>
+        <td th:text="${rec.numOfEpigastricPain}"></td>
+        <td th:text="${rec.numOfDelirium}"></td>
+        <td th:text="${rec.numOfChestDiscomfort}"></td>
+        <td th:text="${rec.numOfTourniquetReaction}"></td>
+        <td th:text="${rec.numOfOther}"></td>
+        <td th:text="${rec.otherComments}"></td>
+        <td>
+          <a th:href="@{/afterSurgery/edit/{id}(id=${rec.id})}" class="btn btn-sm btn-outline-primary">
+            Edit
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <div>
+    <table id="afterSurgeryTableOneSummary" class="table table-bordered table-striped table-hover text-center align-middle">
+      <thead class="table-light">
+      <tr>
+        <th>恶心呕吐总数</th>
+        <th>头晕总数</th>
+        <th>恶心呕吐头晕总数</th>
+        <th>过敏性皮疹总数</th>
+        <th>麻醉恢复迟滞总数</th>
+        <th>穿刺部位异常总数</th>
+        <th>腹胀总数</th>
+        <th>气插不适总数</th>
+        <th>胃脘痛总数</th>
+        <th>瞻望总数</th>
+        <th>心胸不适总数</th>
+        <th>止血带反应总数</th>
+        <th>其他总数</th>
+
+      </tr>
+      </thead>
+      <tbode>
+        <tr>
+          <td id="totalNauseaAndVomiting" th:text="${totalNauseaAndVomiting}">0</td>
+          <td id="totalDizziness" th:text="${totalDizziness}">0</td>
+          <td id="totalNauseaAndVomitingAndDizziness" th:text="${totalNauseaAndVomitingAndDizziness}">0</td>
+          <td id="totalAllergicRash" th:text="${totalAllergicRash}">0</td>
+          <td id="totalProlongedAnestheticRecovery" th:text="${totalProlongedAnestheticRecovery}">0</td>
+          <td id="totalPunctureSiteAbnormality" th:text="${totalPunctureSiteAbnormality}">0</td>
+          <td id="totalAbdominalDistension" th:text="${totalAbdominalDistension}">0</td>
+          <td id="totalEndotrachealIntubationDiscomfort" th:text="${totalEndotrachealIntubationDiscomfort}">0</td>
+          <td id="totalEpigastricPain" th:text="${totalEpigastricPain}">0</td>
+          <td id="totalDelirium" th:text="${totalDelirium}">0</td>
+          <td id="totalChestDiscomfort" th:text="${totalChestDiscomfort}">0</td>
+          <td id="totalTourniquetReaction" th:text="${totalTourniquetReaction}">0</td>
+          <td id="totalOther" th:text="${totalOther}">0</td>
+        </tr>
+      </tbode>
+    </table>
+  </div>
+
+  <div>
+    <table id="afterSurgeryTableOneSummaryProportion" class="table table-bordered table-striped table-hover text-center align-middle">
+      <thead class="table-light">
+      <tr>
+        <th>恶心呕吐占比</th>
+        <th>头晕占比</th>
+        <th>恶心呕吐头晕占比</th>
+        <th>过敏性皮疹占比</th>
+        <th>麻醉恢复迟滞占比</th>
+        <th>穿刺部位异常占比</th>
+        <th>腹胀占比</th>
+        <th>气插不适占比</th>
+        <th>胃脘痛总占比</th>
+        <th>瞻望占比</th>
+        <th>心胸不适占比</th>
+        <th>止血带反应占比</th>
+        <th>其他占比</th>
+      </tr>
+      </thead>
+      <tbode>
+        <tr>
+          <td id="proportionOfNauseaAndVomiting" th:text="${proportionOfNauseaAndVomiting != null ? #numbers.formatDecimal(proportionOfNauseaAndVomiting * 100, 1, 2) + '%' : 'N/A'}">0</td>
+          <td id="proportionOfDizziness" th:text="${proportionOfDizziness != null ? #numbers.formatDecimal(proportionOfDizziness * 100, 1, 2) + '%' : 'N/A'}">0</td>
+          <td id="proportionOfNauseaAndVomitingAndDizziness" th:text="${proportionOfNauseaAndVomitingAndDizziness != null ? #numbers.formatDecimal(proportionOfNauseaAndVomitingAndDizziness * 100, 1, 2) + '%' : 'N/A'}">0</td>
+          <td id="proportionOfAllergicRash" th:text="${proportionOfAllergicRash != null ? #numbers.formatDecimal(proportionOfAllergicRash * 100, 1, 2) + '%' : 'N/A'}">0</td>
+          <td id="proportionOfProlongedAnestheticRecovery" th:text="${proportionOfProlongedAnestheticRecovery != null ? #numbers.formatDecimal(proportionOfProlongedAnestheticRecovery * 100, 1, 2) + '%' : 'N/A'}">0</td>
+          <td id="proportionOfPunctureSiteAbnormality" th:text="${proportionOfPunctureSiteAbnormality != null ? #numbers.formatDecimal(proportionOfPunctureSiteAbnormality * 100, 1, 2) + '%' : 'N/A'}">0</td>
+          <td id="proportionOfAbdominalDistension" th:text="${proportionOfAbdominalDistension != null ? #numbers.formatDecimal(proportionOfAbdominalDistension * 100, 1, 2) + '%' : 'N/A'}">0</td>
+          <td id="proportionOfEndotrachealIntubationDiscomfort" th:text="${proportionOfEndotrachealIntubationDiscomfort != null ? #numbers.formatDecimal(proportionOfEndotrachealIntubationDiscomfort * 100, 1, 2) + '%' : 'N/A'}">0</td>
+          <td id="proportionOfEpigastricPain" th:text="${proportionOfEpigastricPain != null ? #numbers.formatDecimal(proportionOfEpigastricPain * 100, 1, 2) + '%' : 'N/A'}">0</td>
+          <td id="proportionOfDelirium" th:text="${proportionOfDelirium != null ? #numbers.formatDecimal(proportionOfDelirium * 100, 1, 2) + '%' : 'N/A'}">0</td>
+          <td id="proportionOfChestDiscomfort" th:text="${proportionOfChestDiscomfort != null ? #numbers.formatDecimal(proportionOfChestDiscomfort * 100, 1, 2) + '%' : 'N/A'}">0</td>
+          <td id="proportionOfTourniquetReaction" th:text="${proportionOfTourniquetReaction != null ? #numbers.formatDecimal(proportionOfTourniquetReaction * 100, 1, 2) + '%' : 'N/A'}">0</td>
+          <td id="proportionOfOther" th:text="${proportionOfOther != null ? #numbers.formatDecimal(proportionOfOther * 100, 1, 2) + '%' : 'N/A'}">0</td>
+      </tbode>
+    </table>
+  </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
