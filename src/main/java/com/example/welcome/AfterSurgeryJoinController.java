@@ -54,6 +54,12 @@ public class AfterSurgeryJoinController {
             dto.setNumOfHandSurgeryComplicationCount((Integer) row[26]);
             dto.setNumOfObstetricAdverseEventCount((Integer) row[27]);
             dto.setNumOfGynecologicalAdverseEventCount((Integer) row[28]);
+            dto.setNumOfFormulationOne((Integer) row[29]);
+            dto.setNumOfFormulationTwo((Integer) row[30]);
+            dto.setNumOfFormulationThree((Integer) row[31]);
+            dto.setNumOfFormulationFour((Integer) row[32]);
+            dto.setNumOfFormulationFive((Integer) row[33]);
+            dto.setNumOfFormulationSix((Integer) row[34]);
             joinedList.add(dto);
         }
 
