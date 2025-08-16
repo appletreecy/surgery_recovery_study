@@ -202,9 +202,9 @@
     <div class="col-12 col-md-4">
       <div class="card h-100">
         <div class="card-body d-flex flex-column align-items-center">
-          <h6 class="card-title">麻醉恢复迟滞占比</h6>
-          <div style="width:220px;height:220px"><canvas id="pieProlongedAnestheticRecovery"></canvas></div>
-          <div class="mt-2 small text-muted" id="pieProlongedAnestheticRecoveryText"></div>
+          <h6 class="card-title">气插不适占比</h6>
+          <div style="width:220px;height:220px"><canvas id="pieEndotrachealIntubationDiscomfort"></canvas></div>
+          <div class="mt-2 small text-muted" id="pieEndotrachealIntubationDiscomfortText"></div>
         </div>
       </div>
     </div>
@@ -220,6 +220,84 @@
   </div>
 </div>
 
+<div class="container-fluid mb-4">
+  <div class="row g-3">
+    <div class="col-12 col-md-4">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column align-items-center">
+          <h6 class="card-title">腹胀占比</h6>
+          <div style="width:220px;height:220px"><canvas id="pieAbdominalDistension"></canvas></div>
+          <div class="mt-2 small text-muted" id="pieAbdominalDistensionText"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column align-items-center">
+          <h6 class="card-title">麻醉恢复迟滞占比</h6>
+          <div style="width:220px;height:220px"><canvas id="pieProlongedAnestheticRecovery"></canvas></div>
+          <div class="mt-2 small text-muted" id="pieProlongedAnestheticRecoveryText"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column align-items-center">
+          <h6 class="card-title">胃脘痛总占比</h6>
+          <div style="width:220px;height:220px"><canvas id="pieEpigastricPain"></canvas></div>
+          <div class="mt-2 small text-muted" id="pieEpigastricPainText"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mb-4">
+  <div class="row g-3">
+    <div class="col-12 col-md-4">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column align-items-center">
+          <h6 class="card-title">瞻望占比</h6>
+          <div style="width:220px;height:220px"><canvas id="pieDelirium"></canvas></div>
+          <div class="mt-2 small text-muted" id="pieDeliriumText"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column align-items-center">
+          <h6 class="card-title">心胸不适占比</h6>
+          <div style="width:220px;height:220px"><canvas id="pieChestDiscomfort"></canvas></div>
+          <div class="mt-2 small text-muted" id="pieChestDiscomfortText"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column align-items-center">
+          <h6 class="card-title">止血带反应占比</h6>
+          <div style="width:220px;height:220px"><canvas id="pieTourniquetReaction"></canvas></div>
+          <div class="mt-2 small text-muted" id="pieTourniquetReactionText"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mb-4">
+  <div class="row g-3">
+    <div class="col-12 col-md-4">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column align-items-center">
+          <h6 class="card-title">其他占比</h6>
+          <div style="width:220px;height:220px"><canvas id="pieOther"></canvas></div>
+          <div class="mt-2 small text-muted" id="pieOtherText"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script th:inline="javascript">
   // proportions from the server (fractions 0..1)
   const pNauseaAndVomitingRaw = /*[[${proportionOfNauseaAndVomiting}]]*/ null;
@@ -229,6 +307,17 @@
   const pAllergicRashRaw       = /*[[${proportionOfAllergicRash}]]*/ null;
   const pProlongedAnestheticRecoveryRaw       = /*[[${proportionOfProlongedAnestheticRecovery}]]*/ null;
   const pPunctureSiteAbnormalityRaw       = /*[[${proportionOfPunctureSiteAbnormality}]]*/ null;
+
+  const pAbdominalDistensionRaw       = /*[[${proportionOfAbdominalDistension}]]*/ null;
+  const pEndotrachealIntubationDiscomfortRaw       = /*[[${proportionOfEndotrachealIntubationDiscomfort}]]*/ null;
+  const pEpigastricPainRaw       = /*[[${proportionOfEpigastricPain}]]*/ null;
+
+  const pDeliriumRaw       = /*[[${proportionOfDelirium}]]*/ null;
+  const pChestDiscomfortRaw       = /*[[${proportionOfChestDiscomfort}]]*/ null;
+  const pTourniquetReactionRaw       = /*[[${proportionOfTourniquetReaction}]]*/ null;
+
+  const pOtherRaw       = /*[[${proportionOfOther}]]*/ null;
+
 
   const toNum = v => (v == null || v === '' || isNaN(v)) ? 0 : Number(v);
   const clamp01 = n => Math.min(Math.max(n, 0), 1);
@@ -274,6 +363,16 @@
   makePie('pieAllergicRash', 'pieAllergicRashText', fracToPct(pAllergicRashRaw), ['#4e79a7', '#e0e0e0']);
   makePie('pieProlongedAnestheticRecovery', 'pieProlongedAnestheticRecoveryText', fracToPct(pProlongedAnestheticRecoveryRaw), ['#f28e2b', '#e0e0e0']);
   makePie('piePunctureSiteAbnormality', 'piePunctureSiteAbnormalityText', fracToPct(pPunctureSiteAbnormalityRaw), ['#59a14f', '#e0e0e0']);
+
+  makePie('pieAbdominalDistension', 'pieAbdominalDistensionText', fracToPct(pAbdominalDistensionRaw), ['#4e79a7', '#e0e0e0']);
+  makePie('pieEndotrachealIntubationDiscomfort', 'pieEndotrachealIntubationDiscomfortText', fracToPct(pEndotrachealIntubationDiscomfortRaw), ['#f28e2b', '#e0e0e0']);
+  makePie('pieEpigastricPain', 'pieEpigastricPainText', fracToPct(pEpigastricPainRaw), ['#59a14f', '#e0e0e0']);
+
+  makePie('pieDelirium', 'pieDeliriumText', fracToPct(pDeliriumRaw), ['#4e79a7', '#e0e0e0']);
+  makePie('pieChestDiscomfort', 'pieChestDiscomfortText', fracToPct(pChestDiscomfortRaw), ['#f28e2b', '#e0e0e0']);
+  makePie('pieTourniquetReaction', 'pieTourniquetReactionText', fracToPct(pTourniquetReactionRaw), ['#59a14f', '#e0e0e0']);
+
+   makePie('pieOther', 'pieOtherText', fracToPct(pOtherRaw), ['#59a14f', '#e0e0e0']);
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
