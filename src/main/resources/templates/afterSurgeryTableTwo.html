@@ -97,7 +97,7 @@
 
       </tr>
       </thead>
-      <tbode>
+      <tbody>
         <tr>
           <td id="totalNauseaAndVomiting" th:text="${totalNauseaAndVomiting}">0</td>
           <td id="totalDizziness" th:text="${totalDizziness}">0</td>
@@ -113,7 +113,7 @@
           <td id="totalTourniquetReaction" th:text="${totalTourniquetReaction}">0</td>
           <td id="totalOther" th:text="${totalOther}">0</td>
         </tr>
-      </tbode>
+      </tbody>
     </table>
   </div>
 
@@ -136,7 +136,7 @@
         <th>其他占比</th>
       </tr>
       </thead>
-      <tbode>
+      <tbody>
         <tr>
           <td id="proportionOfNauseaAndVomiting" th:text="${proportionOfNauseaAndVomiting != null ? #numbers.formatDecimal(proportionOfNauseaAndVomiting * 100, 1, 2) + '%' : 'N/A'}">0</td>
           <td id="proportionOfDizziness" th:text="${proportionOfDizziness != null ? #numbers.formatDecimal(proportionOfDizziness * 100, 1, 2) + '%' : 'N/A'}">0</td>
@@ -151,7 +151,7 @@
           <td id="proportionOfChestDiscomfort" th:text="${proportionOfChestDiscomfort != null ? #numbers.formatDecimal(proportionOfChestDiscomfort * 100, 1, 2) + '%' : 'N/A'}">0</td>
           <td id="proportionOfTourniquetReaction" th:text="${proportionOfTourniquetReaction != null ? #numbers.formatDecimal(proportionOfTourniquetReaction * 100, 1, 2) + '%' : 'N/A'}">0</td>
           <td id="proportionOfOther" th:text="${proportionOfOther != null ? #numbers.formatDecimal(proportionOfOther * 100, 1, 2) + '%' : 'N/A'}">0</td>
-      </tbode>
+      </tbody>
     </table>
   </div>
 

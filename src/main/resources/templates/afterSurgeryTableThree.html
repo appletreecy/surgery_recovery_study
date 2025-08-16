@@ -62,7 +62,59 @@
     </tr>
     </tbody>
   </table>
+</div>
 
+<div>
+  <table id="afterSurgeryTableOneSummary" class="table table-bordered table-striped table-hover text-center align-middle">
+    <thead class="table-light">
+    <tr>
+      <th>关节不良总数</th>
+      <th>运动不良数</th>
+      <th>创伤不良总数</th>
+      <th>足踝不良总数</th>
+      <th>小儿不良总数</th>
+      <th>脊柱不良总数</th>
+      <th>手外不良数</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="totalNumOfJointComplicationCount" th:text="${totalNumOfJointComplicationCount}">0</td>
+        <td id="totalNumOfMotorDysfunctionCount" th:text="${totalNumOfMotorDysfunctionCount}">0</td>
+        <td id="totalNumOfTraumaComplicationCount" th:text="${totalNumOfTraumaComplicationCount}">0</td>
+        <td id="totalNumOfAnkleComplicationCount" th:text="${totalNumOfAnkleComplicationCount}">0</td>
+        <td id="totalNumOfPediatricAdverseEventCount" th:text="${totalNumOfPediatricAdverseEventCount}">0</td>
+        <td id="totalNumOfSpinalComplicationCount" th:text="${totalNumOfSpinalComplicationCount}">0</td>
+        <td id="totalNumOfHandSurgeryComplicationCount" th:text="${totalNumOfHandSurgeryComplicationCount}">0</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div>
+  <table id="afterSurgeryTableOneSummaryProportion" class="table table-bordered table-striped table-hover text-center align-middle">
+    <thead class="table-light">
+    <tr>
+      <th>关节不良占比</th>
+      <th>运动不良占比</th>
+      <th>创伤不良占比</th>
+      <th>足踝不良占比</th>
+      <th>小儿不良占比</th>
+      <th>脊柱不良占比</th>
+      <th>手外不良占比</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td id="proportionOfJointComplicationCount" th:text="${proportionOfJointComplicationCount != null ? #numbers.formatDecimal(proportionOfJointComplicationCount * 100, 1, 2) + '%' : 'N/A'}">0</td>
+      <td id="proportionOfMotorDysfunctionCount" th:text="${proportionOfMotorDysfunctionCount != null ? #numbers.formatDecimal(proportionOfMotorDysfunctionCount * 100, 1, 2) + '%' : 'N/A'}">0</td>
+      <td id="proportionOfTraumaComplicationCount" th:text="${proportionOfTraumaComplicationCount != null ? #numbers.formatDecimal(proportionOfTraumaComplicationCount * 100, 1, 2) + '%' : 'N/A'}">0</td>
+      <td id="proportionOfAnkleComplicationCount" th:text="${proportionOfAnkleComplicationCount != null ? #numbers.formatDecimal(proportionOfAnkleComplicationCount * 100, 1, 2) + '%' : 'N/A'}">0</td>
+      <td id="proportionOfPediatricAdverseEventCount" th:text="${proportionOfPediatricAdverseEventCount != null ? #numbers.formatDecimal(proportionOfPediatricAdverseEventCount * 100, 1, 2) + '%' : 'N/A'}">0</td>
+      <td id="proportionOfSpinalComplicationCount" th:text="${proportionOfSpinalComplicationCount != null ? #numbers.formatDecimal(proportionOfSpinalComplicationCount * 100, 1, 2) + '%' : 'N/A'}">0</td>
+      <td id="proportionOfHandSurgeryComplicationCount" th:text="${proportionOfHandSurgeryComplicationCount != null ? #numbers.formatDecimal(proportionOfHandSurgeryComplicationCount * 100, 1, 2) + '%' : 'N/A'}">0</td>
+    </tbody>
+  </table>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -19,12 +19,24 @@
       padding-right: 50rem;
     }
   }
+
+  /* keep ALL header text on a single line (incl. CJK) */
+  #afterSurgeryTableOne thead th {
+    white-space: nowrap;
+    word-break: keep-all;
+  }
+
+  /* let the table be as wide as its content; still at least 100% */
+  .table-wide {
+    width: max-content;
+    min-width: 100%;
+  }
 </style>
 
 <div th:replace="fragments/navbar :: navbar"></div>
 
   <div class="table-responsive mb-4">
-    <table id="afterSurgeryTableOne" class="table table-bordered table-striped table-hover text-center align-middle">
+    <table id="afterSurgeryTableOne" class="table table-bordered table-striped table-hover text-center align-middle table-wide">
       <thead class="table-light">
         <tr>
         <th>日期</th>
@@ -47,6 +59,15 @@
         <th>止血带反应</th>
         <th>其他</th>
         <th>其他备注</th>
+        <th>关节不良数</th>
+        <th>运动不良数</th>
+        <th>创伤不良数</th>
+        <th>足踝不良数</th>
+        <th>小儿不良数</th>
+        <th>脊柱不良数</th>
+        <th>手外不良数</th>
+        <th>产科</th>
+        <th>妇科</th>
       </tr>
       </thead>
       <tbody>
@@ -71,6 +92,15 @@
         <td th:text="${row.numOfTourniquetReaction}"></td>
         <td th:text="${row.numOfOther}"></td>
         <td th:text="${row.otherComments}"></td>
+        <td th:text="${row.numOfJointComplicationCount}"></td>
+        <td th:text="${row.numOfMotorDysfunctionCount}"></td>
+        <td th:text="${row.numOfTraumaComplicationCount}"></td>
+        <td th:text="${row.numOfAnkleComplicationCount}"></td>
+        <td th:text="${row.numOfPediatricAdverseEventCount}"></td>
+        <td th:text="${row.numOfSpinalComplicationCount}"></td>
+        <td th:text="${row.numOfHandSurgeryComplicationCount}"></td>
+        <td th:text="${row.numOfObstetricAdverseEventCount}"></td>
+        <td th:text="${row.numOfGynecologicalAdverseEventCount}"></td>
       </tr>
       </tbody>
     </table>

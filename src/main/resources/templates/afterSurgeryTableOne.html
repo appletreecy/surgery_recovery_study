@@ -65,14 +65,14 @@
         <th>术后镇痛差总数</th>
       </tr>
       </thead>
-      <tbode>
+      <tbody>
         <tr>
           <td id="totalVisits" th:text="${totalVisits}">0</td>
           <td id="totalPostoperativeAnalgesia" th:text="${totalPostoperativeAnalgesia}">0</td>
           <td id="totalAdverseReactions" th:text="${totalAdverseReactions}">0</td>
           <td id="totalInadequateAnalgesia" th:text="${totalInadequateAnalgesia}">0</td>
         </tr>
-      </tbode>
+      </tbody>
     </table>
   </div>
 
@@ -85,13 +85,13 @@
       <th>术后镇痛差总数占比</th>
     </tr>
     </thead>
-    <tbode>
+    <tbody>
       <tr>
         <td id="proportionOfTotalPostoperativeAnalgesiaCases" th:text="${proportionOfTotalPostoperativeAnalgesiaCases != null ? #numbers.formatDecimal(proportionOfTotalPostoperativeAnalgesiaCases * 100, 1, 2) + '%' : 'N/A'}">0</td>
         <td id="proportionOfTotalAdverseReactions" th:text="${proportionOfTotalAdverseReactions != null ? #numbers.formatDecimal(proportionOfTotalAdverseReactions * 100, 1, 2) + '%' : 'N/A'}">0</td>
         <td id="proportionOfTotalInadequateAnalgesia" th:text="${proportionOfTotalInadequateAnalgesia != null ? #numbers.formatDecimal(proportionOfTotalInadequateAnalgesia * 100, 1, 2) + '%' : 'N/A'}">0</td>
       </tr>
-    </tbode>
+    </tbody>
   </table>
 </div>
 

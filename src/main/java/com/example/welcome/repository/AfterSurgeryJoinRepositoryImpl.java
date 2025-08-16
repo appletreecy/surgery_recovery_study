@@ -35,9 +35,19 @@ public class AfterSurgeryJoinRepositoryImpl implements AfterSurgeryJoinRepositor
                 "t2.numOfChestDiscomfort, " +
                 "t2.numOfTourniquetReaction, " +
                 "t2.numOfOther, " +
-                "t2.otherComments " +
+                "t2.otherComments, " +
+                "t3.numOfJointComplicationCount, " +
+                "t3.numOfMotorDysfunctionCount, " +
+                "t3.numOfTraumaComplicationCount, " +
+                "t3.numOfAnkleComplicationCount, " +
+                "t3.numOfPediatricAdverseEventCount, " +
+                "t3.numOfSpinalComplicationCount, " +
+                "t3.numOfHandSurgeryComplicationCount, " +
+                "t3.numOfObstetricAdverseEventCount, " +
+                "t3.numOfGynecologicalAdverseEventCount " +
                 "FROM afterSurgeryTableOne t1 " +
-                "JOIN afterSurgeryTableTwo t2 ON t1.date = t2.date";
+                "JOIN afterSurgeryTableTwo t2 ON t1.date = t2.date " +
+                "JOIN afterSurgeryTableThree t3 ON t1.date = t3.date";
 
         Query query = entityManager.createNativeQuery(sql);
         return query.getResultList();

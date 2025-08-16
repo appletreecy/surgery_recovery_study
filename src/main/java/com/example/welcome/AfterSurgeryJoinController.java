@@ -45,6 +45,15 @@ public class AfterSurgeryJoinController {
             dto.setNumOfTourniquetReaction((Integer) row[17]);
             dto.setNumOfOther((Integer) row[18]);
             dto.setOtherComments((String) row[19]);
+            dto.setNumOfJointComplicationCount((Integer) row[20]);
+            dto.setNumOfMotorDysfunctionCount((Integer) row[21]);
+            dto.setNumOfTraumaComplicationCount((Integer) row[22]);
+            dto.setNumOfAnkleComplicationCount((Integer) row[23]);
+            dto.setNumOfPediatricAdverseEventCount((Integer) row[24]);
+            dto.setNumOfSpinalComplicationCount((Integer) row[25]);
+            dto.setNumOfHandSurgeryComplicationCount((Integer) row[26]);
+            dto.setNumOfObstetricAdverseEventCount((Integer) row[27]);
+            dto.setNumOfGynecologicalAdverseEventCount((Integer) row[28]);
             joinedList.add(dto);
         }
 
