@@ -13,12 +13,12 @@ import java.util.List;
 public class AfterSurgeryTableOneController {
 
     @Autowired
-    private AfterSurgeryTableOneRepository afterSurgeryRepositoryTableOne;
+    private AfterSurgeryTableOneRepository afterSurgeryTableOneRepository;
 
     @GetMapping({"/", ""})
     public String showTableOne(Model model){
 
-        List<AfterSurgeryTableOne> records = afterSurgeryRepositoryTableOne.findAll();
+        List<AfterSurgeryTableOne> records = afterSurgeryTableOneRepository.findAll();
         int totalVisits = records.stream()
                 .filter(r -> r.getNumOfPostoperativeVisits() != null)
                 .mapToInt(AfterSurgeryTableOne::getNumOfPostoperativeVisits)
@@ -59,6 +59,18 @@ public class AfterSurgeryTableOneController {
 
 
         return "afterSurgeryTableOne";
+    }
+
+    @GetMapping("/add")
+    public String showAddForm(Model model){
+        model.addAttribute("afterSurgeryTableOne", new AfterSurgeryTableOne());
+        return "addAfterSurgeryTableOne";
+    }
+
+    @PostMapping("/add")
+    public String submitForm(@ModelAttribute AfterSurgeryTableOne afterSurgeryTableOne){
+        afterSurgeryTableOneRepository.save(afterSurgeryTableOne);
+        return "redirect:/afterSurgeryTableOne";
     }
 
 }
