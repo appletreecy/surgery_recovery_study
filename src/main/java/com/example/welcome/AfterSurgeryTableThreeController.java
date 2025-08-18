@@ -16,7 +16,7 @@ import java.util.List;
 public class AfterSurgeryTableThreeController {
 
     @Autowired
-    private AfterSurgeryTableThreeRepository afterSurgeryRepositoryTableThree;
+    private AfterSurgeryTableThreeRepository afterSurgeryTableThreeRepository;
 
     @Autowired
     private AfterSurgeryTableOneRepository afterSurgeryRepositoryTableOne;
@@ -24,7 +24,7 @@ public class AfterSurgeryTableThreeController {
     @GetMapping({"/", ""})
     public String showTableOne(Model model){
 
-        List<AfterSurgeryTableThree> tableThreeRecords = afterSurgeryRepositoryTableThree.findAll();
+        List<AfterSurgeryTableThree> tableThreeRecords = afterSurgeryTableThreeRepository.findAll();
         int totalNumOfJointComplicationCount = tableThreeRecords.stream()
                 .filter(r -> r.getNumOfJointComplicationCount() != null)
                 .mapToInt(AfterSurgeryTableThree::getNumOfJointComplicationCount)
@@ -114,6 +114,59 @@ public class AfterSurgeryTableThreeController {
 
 
         return "afterSurgeryTableThree";
+    }
+
+    @GetMapping("/add")
+    public String showAddForm(Model model){
+        model.addAttribute("afterSurgeryTableThree", new AfterSurgeryTableThree());
+        return "addAfterSurgeryTableThree";
+    }
+
+    @PostMapping("/add")
+    public String submitForm(@ModelAttribute AfterSurgeryTableThree afterSurgeryTableThree){
+        afterSurgeryTableThreeRepository.save(afterSurgeryTableThree);
+        return "redirect:/afterSurgeryTableThree";
+    }
+
+    @GetMapping("/delete")
+    public String showDeleteForm() {
+        return "deleteAfterSurgeryTableThree";
+    }
+
+    @PostMapping("/delete")
+    public String deleteRecord(@RequestParam("id") Long id, Model model) {
+        boolean exists = afterSurgeryTableThreeRepository.existsById(id);
+        if (exists) {
+            afterSurgeryTableThreeRepository.deleteById(id);
+            model.addAttribute("message", "Record with ID " + id + " has been deleted.");
+        } else {
+            model.addAttribute("message", "No record found with ID " + id + ".");
+        }
+        return "deleteAfterSurgeryTableThree";
+    }
+
+    // Get: Show update form one
+    @GetMapping("/editone")
+    public String showEditFormOne() {
+        return "editAfterSurgeryTableThreeOne";
+    }
+
+    // GET: Show update form
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        AfterSurgeryTableThree record = afterSurgeryTableThreeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid ID: " + id));
+
+        System.out.println("Loaded date: " + record.getDate()); // 🔍 Check if null
+        model.addAttribute("afterSurgeryTableThree", record);
+        return "editAfterSurgeryTableThree";
+    }
+
+    // POST: Handle update form submission
+    @PostMapping("/edit")
+    public String updateAfterSurgery(@ModelAttribute AfterSurgeryTableThree record) {
+        afterSurgeryTableThreeRepository.save(record);
+        return "redirect:/afterSurgeryTableThree"; // Redirect to dashboard
     }
 
 }
