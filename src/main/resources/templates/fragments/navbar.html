@@ -38,13 +38,35 @@
               </ul>
             </li>
           <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-              <a class="nav-link dropdown-toggle" href="#" id="tableDropdown" role="button"
+              <a class="nav-link dropdown-toggle" href="#" id="tableAddOneRowDropdown" role="button"
                  data-bs-toggle="dropdown" aria-expanded="false">
                   添加表 一行
               </a>
               <ul class="dropdown-menu" aria-labelledby="tableDropdown">
                   <li>
                       <a class="dropdown-item" th:href="@{/afterSurgeryTableOne/add}">添加表一</a>
+                  </li>
+              </ul>
+          </li>
+          <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+              <a class="nav-link dropdown-toggle" href="#" id="tableDeleteOneRowDropdown" role="button"
+                 data-bs-toggle="dropdown" aria-expanded="false">
+                  删除表 一行
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="tableDropdown">
+                  <li>
+                      <a class="dropdown-item" th:href="@{/afterSurgeryTableOne/delete}">删除表一(一行)</a>
+                  </li>
+              </ul>
+          </li>
+          <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+              <a class="nav-link dropdown-toggle" href="#" id="tableEditeOneRowDropdown" role="button"
+                 data-bs-toggle="dropdown" aria-expanded="false">
+                  修改表 一行
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="tableDropdown">
+                  <li>
+                      <a class="dropdown-item" th:href="@{/afterSurgeryTableOne/editone}">修改表一(一行)</a>
                   </li>
               </ul>
           </li>

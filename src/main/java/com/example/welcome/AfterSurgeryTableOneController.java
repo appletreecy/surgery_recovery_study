@@ -1,4 +1,5 @@
 package com.example.welcome;
+import com.example.welcome.model.AfterSurgery;
 import com.example.welcome.model.AfterSurgeryTableOne;
 import com.example.welcome.repository.AfterSurgeryTableOneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,5 +74,45 @@ public class AfterSurgeryTableOneController {
         return "redirect:/afterSurgeryTableOne";
     }
 
+    @GetMapping("/delete")
+    public String showDeleteForm() {
+        return "deleteAfterSurgeryTableOne";
+    }
+
+    @PostMapping("/delete")
+    public String deleteRecord(@RequestParam("id") Long id, Model model) {
+        boolean exists = afterSurgeryTableOneRepository.existsById(id);
+        if (exists) {
+            afterSurgeryTableOneRepository.deleteById(id);
+            model.addAttribute("message", "Record with ID " + id + " has been deleted.");
+        } else {
+            model.addAttribute("message", "No record found with ID " + id + ".");
+        }
+        return "deleteAfterSurgeryTableOne";
+    }
+
+    // Get: Show update form one
+    @GetMapping("/editone")
+    public String showEditFormOne() {
+        return "editAfterSurgeryTableOneOne";
+    }
+
+    // GET: Show update form
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        AfterSurgeryTableOne record = afterSurgeryTableOneRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid ID: " + id));
+
+        System.out.println("Loaded date: " + record.getDate()); // 🔍 Check if null
+        model.addAttribute("afterSurgeryTableOne", record);
+        return "editAfterSurgeryTableOne";
+    }
+
+    // POST: Handle update form submission
+    @PostMapping("/edit")
+    public String updateAfterSurgery(@ModelAttribute AfterSurgeryTableOne record) {
+        afterSurgeryTableOneRepository.save(record);
+        return "redirect:/afterSurgeryTableOne"; // Redirect to dashboard
+    }
 }
 
