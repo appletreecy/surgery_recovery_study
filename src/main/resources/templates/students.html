@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Student Dashboard</title>
@@ -22,32 +22,9 @@
 </style>
 
 <div class="container-fluid px-2 px-md-5 px-lg-6 px-xxl-20">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Postoperative Dashboard</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/}">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/afterSurgery/add}">Add Record</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/afterSurgery/editone}">Edit Record</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/afterSurgery/delete}">Delete Record</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+
+    <div th:replace="fragments/navbar :: navbar"></div>
+
     <h1 class="mb-4 text-center text-primary">Postoperative Dashboard</h1>
 
     <!-- Table 1: Raw After Surgery Records -->
@@ -399,10 +376,41 @@
         document.body.removeChild(link);
     }
 </script>
+<!--<script th:inline="javascript">-->
+<!--    const analgesiaLabels = /*[[${afterSurgeryRecords}]]*/ [];-->
+<!--    const labels = analgesiaLabels.map(r => r.date); // or r.id-->
+<!--    const data = analgesiaLabels.map(r => r.numOfPostoperativeAnalgesiaCases);-->
+
+<!--    const ctx = document.getElementById('analgesiaChart').getContext('2d');-->
+<!--    new Chart(ctx, {-->
+<!--        type: 'bar',-->
+<!--        data: {-->
+<!--            labels: labels,-->
+<!--            datasets: [{-->
+<!--                label: 'Analgesia Cases',-->
+<!--                data: data,-->
+<!--                backgroundColor: 'rgba(54, 162, 235, 0.6)',-->
+<!--                borderColor: 'rgba(54, 162, 235, 1)',-->
+<!--                borderWidth: 1-->
+<!--            }]-->
+<!--        },-->
+<!--        options: {-->
+<!--            responsive: true,-->
+<!--            scales: {-->
+<!--                x: { title: { display: true, text: 'Date' } },-->
+<!--                y: { title: { display: true, text: 'Analgesia Cases' }, beginAtZero: true }-->
+<!--            }-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
 <script th:inline="javascript">
     const analgesiaLabels = /*[[${afterSurgeryRecords}]]*/ [];
-    const labels = analgesiaLabels.map(r => r.date); // or r.id
+    const labels = analgesiaLabels.map(r => r.date);
     const data = analgesiaLabels.map(r => r.numOfPostoperativeAnalgesiaCases);
+
+    // Set repeating colors: red, blue, yellow
+    const backgroundColors = data.map((_, i) => ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'][i % 3]);
+    const borderColors = data.map((_, i) => ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'][i % 3]);
 
     const ctx = document.getElementById('analgesiaChart').getContext('2d');
     new Chart(ctx, {
@@ -412,8 +420,8 @@
             datasets: [{
                 label: 'Analgesia Cases',
                 data: data,
-                backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: backgroundColors,
+                borderColor: borderColors,
                 borderWidth: 1
             }]
         },
@@ -426,6 +434,7 @@
         }
     });
 </script>
+
 <script th:inline="javascript">
     const pieRecords = /*[[${afterSurgeryRecords}]]*/ [];
     const pieLabels = pieRecords.map(r => r.date); // or use r.id
